@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jp.co.internous.framepj.model.mapper.MstProductMapper">
+
+	<select id="findByCategoryAndProductName" resultType="jp.co.internous.framepj.model.domain.MstProduct">
+		SELECT
+			image_full_path,
+			product_name,
+			price,
+			id
+		FROM
+			mst_product
+		WHERE
+			category_id = #{category} AND
+			<foreach item="name" collection="keywords" separator="OR">
+				product_name LIKE CONCAT("%", #{name}, "%")
+			</foreach>
+	</select>
+	
+	<select id="findByProductName" resultType="jp.co.internous.framepj.model.domain.MstProduct">
+		SELECT
+			image_full_path,
+			product_name,
+			price,
+			id
+		FROM
+			mst_product
+		<where>
+			<foreach item="name" collection="keywords" separator="OR">
+				product_name LIKE CONCAT("%", #{name}, "%")
+			</foreach>
+		</where>
+	</select>
+</mapper>
